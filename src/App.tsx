@@ -3,7 +3,7 @@ import {Accounts} from "./pages/Accounts.tsx";
 import {Profiles} from "./pages/Profiles.tsx";
 import {Campaigns} from "./pages/Campaigns.tsx";
 
-function App() {
+const App = () => {
   return (
      <Routes>
        <Route path='/' element={<Accounts /> } />
@@ -13,13 +13,13 @@ function App() {
   )
 }
 
-function ProfilesWrapper() {
-  const { accountId } = useParams();
+const ProfilesWrapper = () => {
+  const { accountId } = useParams()
   return <Profiles accountId={Number(accountId)} />
 }
 
-function CampaignsWrapper() {
-  const { profileId } = useParams();
+const CampaignsWrapper = () => {
+  const { profileId } = useParams()
   return <Campaigns profileId={Number(profileId)} />
 }
 

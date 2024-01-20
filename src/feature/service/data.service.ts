@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
-import {Account, Profile, Campaign} from "./module.ts";
+import {Account, Profile, Campaign} from "./models.ts";
 import {getAccountsData, getProfilesData, getCampaignsData} from "./data.ts";
 
-export function useAccounts() {
+export const useAccounts = () => {
   const [accounts, setAccounts] = useState<Account[]>([])
   const [loadingAccounts, setLoadingAccounts] = useState(false)
   const [errorAccounts, setErrorAccounts] = useState<string>('')
@@ -29,7 +29,7 @@ return {
   }
 }
 
-export function useProfiles(accountId: number) {
+export const useProfiles = (accountId: number) => {
   const [profiles, setProfiles] = useState<Profile[]>([])
   const [loadingProfiles, setLoadingProfiles] = useState(false)
   const [errorProfiles, setErrorProfiles] = useState<string>('')
@@ -56,7 +56,7 @@ return {
   }
 }
 
-export function useCampaigns(profileId: number) {
+export const useCampaigns = (profileId: number) => {
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
   const [loadingCampaigns, setLoadingCampaigns] = useState(false)
   const [errorCampaigns, setErrorCampaigns] = useState<string>('')
