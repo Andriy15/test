@@ -19,3 +19,13 @@ export interface Campaign {
   date: string;
   profileId: number;
 }
+
+export interface PaginationProps {
+  currentPage: number;
+  totalPages: number;
+}
+
+export interface Response<T> {
+  data: T;
+  pagination: PaginationProps;
+}

@@ -1,15 +1,26 @@
 import Pagination from 'react-bootstrap/Pagination'
-import {PaginationProps} from "./models.ts";
+import {PaginationProps} from "../service/models.ts";
 
-export const PaginationComponent = ({ currentPage, totalPages, handlePageChange }: PaginationProps) => {
-  let paginationItems = [];
-  for (let number = 1; number <= totalPages; number++) {
-    paginationItems.push(
-       <Pagination.Item key={number} active={number === currentPage} onClick={() => handlePageChange(number)}>
-         {number}
-       </Pagination.Item>,
-    )
+interface Props {
+    pagination: PaginationProps,
+    countPerPage: number;
+    handlePageChange: (pageNumber: number) => void;
+}
+
+export const PaginationComponent = ({ pagination, countPerPage, handlePageChange }: Props) => {
+  const totalPages = Math.ceil(pagination.totalPages / countPerPage)
+
+  if (totalPages <= 1) {
+    return
   }
 
+  let paginationItems = []
+  for (let page = 1; page <= totalPages; page++) {
+    paginationItems.push(
+       <Pagination.Item key={page} active={page === pagination.currentPage} onClick={() => handlePageChange(page)}>
+         {page}
+       </Pagination.Item>
+    )
+  }
   return <Pagination>{paginationItems}</Pagination>
 }

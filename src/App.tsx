@@ -7,8 +7,8 @@ const App = () => {
   return (
      <Routes>
        <Route path='/' element={<Accounts /> } />
-       <Route path='/profiles/:accountId' element={<ProfilesWrapper /> } />
-       <Route path='/campaigns/:profileId' element={<CampaignsWrapper /> } />
+       <Route path=':accountId/profiles' element={<ProfilesWrapper /> } />
+       <Route path=':accountId/profiles/:profileId' element={<CampaignsWrapper /> } />
      </Routes>
   )
 }

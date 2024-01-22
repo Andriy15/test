@@ -1,4 +1,4 @@
-import {Account, Campaign, Profile} from "./models.ts";
+import {Account, Campaign, Profile, Response} from "./models.ts";
 
 const accountsData: Account[] = [
   {
@@ -26,6 +26,14 @@ const accountsData: Account[] = [
     creationDate: '2021-01-05'
   }
 ]
+
+const accountsResponse: Response<Account[]> = {
+  data: accountsData,
+  pagination: {
+    currentPage: 1,
+    totalPages: accountsData.length,
+  }
+}
 
 const profilesData: Profile[] = [
   {
@@ -82,7 +90,7 @@ const profilesData: Profile[] = [
     marketplace: "Rakuten",
     accountId: 1
   },
-];
+]
 
 const campaignsData: Campaign[] = [
   {
@@ -148,31 +156,42 @@ const campaignsData: Campaign[] = [
     date: '2021-01-26',
     profileId: 108
   },
-];
+]
 
-
-export const getAccountsData = (): Promise<Account[]> => {
+export const getAccountsData = (): Promise<Response<Account[]>> => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(accountsData);
+      resolve(accountsResponse)
     }, 500)
   })
 }
 
-export const getProfilesData = (accountId: number): Promise<Profile[]> => {
+export const getProfilesData = (accountId: number): Promise<Response<Profile[]>> => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      const selectedProfiles = profilesData.filter(profile => profile.accountId === accountId)
-      resolve(selectedProfiles)
+        const selectedProfiles = profilesData.filter(profile => profile.accountId === accountId)
+        resolve({
+            data: selectedProfiles,
+            pagination: {
+              currentPage: 1,
+              totalPages: selectedProfiles.length
+            }
+        })
     }, 500)
   })
 }
 
-export const getCampaignsData = (profileId: number): Promise<Campaign[]> => {
+export const getCampaignsData = (profileId: number): Promise<Response<Campaign[]>> => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      const selectedCampaigns = campaignsData.filter(campaign => campaign.profileId === profileId)
-      resolve(selectedCampaigns)
+        const selectedCampaigns = campaignsData.filter(campaign => campaign.profileId === profileId)
+        resolve({
+            data: selectedCampaigns,
+            pagination: {
+              currentPage: 1,
+              totalPages: selectedCampaigns.length
+            }
+        })
     }, 500)
   })
 }
