@@ -2,7 +2,7 @@ import {Link} from "react-router-dom";
 import { useCampaigns } from "../service/data.service.ts";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useMemo, useState} from 'react';
 import { DateTime } from 'luxon';
 import {PaginationComponent} from "../shared/Pagination.tsx";
 import {Campaign} from "../service/models.ts";
@@ -24,17 +24,17 @@ export const Campaigns = ({ profileId }: Props) => {
   const indexOfLastCampaign = currentPage * campaignsPerPage
   const indexOfFirstCampaign = indexOfLastCampaign - campaignsPerPage
 
-  const currentCampaigns = filteredCampaigns.slice(indexOfFirstCampaign, indexOfLastCampaign)
+  const currentCampaigns = useMemo(() => filteredCampaigns.slice(indexOfFirstCampaign, indexOfLastCampaign), [filteredCampaigns, indexOfFirstCampaign, indexOfLastCampaign])
 
   const handlePageChange = (pageNumber: number): void => {
     campaigns.pagination.currentPage = pageNumber
     setCurrentPage(pageNumber)
   }
 
-  const setPagination = (data: Campaign[], currentPage = 1): void => {
+  const setPagination = useCallback((data: Campaign[], currentPage = 1): void => {
     campaigns.pagination.currentPage = currentPage
     campaigns.pagination.totalPages = data.length
-  }
+  }, [campaigns.pagination])
 
   useEffect(() => {
     if (campaigns.data) {

@@ -4,7 +4,7 @@ import { Account } from "../service/models.ts";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import { DateTime } from 'luxon'
-import { useState, useEffect } from 'react';
+import {useState, useEffect, useMemo, useCallback} from 'react';
 import {PaginationComponent} from "../shared/Pagination.tsx";
 import {FilterComponent} from "../shared/Filtration.tsx";
 import {Dropdown} from "react-bootstrap";
@@ -20,12 +20,12 @@ export const Accounts = () => {
   const indexOfLastAccount = currentPage * accountsPerPage
   const indexOfFirstAccount = indexOfLastAccount - accountsPerPage
 
-  const currentAccounts =  filteredAccount.slice(indexOfFirstAccount, indexOfLastAccount)
+  const currentAccounts =  useMemo(() => filteredAccount.slice(indexOfFirstAccount, indexOfLastAccount), [filteredAccount, indexOfFirstAccount, indexOfLastAccount])
 
-  const setPagination = (data: Account[], currentPage = 1): void => {
+  const setPagination = useCallback((data: Account[], currentPage = 1): void => {
     accounts.pagination.currentPage = currentPage;
     accounts.pagination.totalPages = data.length;
-  }
+  }, [accounts.pagination])
 
   useEffect(() => {
     if (accounts.data) {
@@ -71,17 +71,17 @@ export const Accounts = () => {
 
   const handleSortChange = (sortValue: string): void => {
     if (sortValue === 'asc') {
-        const sortedAccounts = [...filteredAccount].sort((a, b) => {
-          return a.email.localeCompare(b.email)
-        })
-        setPagination(sortedAccounts)
-        setFilteredAccount(sortedAccounts)
+      const sortedAccounts = [...filteredAccount].sort((a, b) => {
+        return a.email.localeCompare(b.email)
+      })
+      setPagination(sortedAccounts)
+      setFilteredAccount(sortedAccounts)
     } else {
-        const sortedAccounts = [...filteredAccount].sort((a, b) => {
-          return b.email.localeCompare(a.email)
-        })
-        setPagination(sortedAccounts)
-        setFilteredAccount(sortedAccounts)
+      const sortedAccounts = [...filteredAccount].sort((a, b) => {
+        return b.email.localeCompare(a.email)
+      })
+      setPagination(sortedAccounts)
+      setFilteredAccount(sortedAccounts)
     }
   }
 

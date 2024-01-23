@@ -2,7 +2,7 @@ import {Link} from "react-router-dom";
 import { useProfiles } from "../service/data.service.ts";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useMemo, useState} from 'react';
 import {PaginationComponent} from "../shared/Pagination.tsx";
 import {Profile} from "../service/models.ts";
 import {FilterComponent} from "../shared/Filtration.tsx";
@@ -23,12 +23,12 @@ export const Profiles = ({ accountId }: Props) => {
   const indexOfLastProfile = currentPage * profilesPerPage
   const indexOfFirstProfile = indexOfLastProfile - profilesPerPage
 
-  const currentProfiles = filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile)
+  const currentProfiles = useMemo(() => filteredProfiles.slice(indexOfFirstProfile, indexOfLastProfile), [filteredProfiles, indexOfFirstProfile, indexOfLastProfile])
 
-  const setPagination = (data: Profile[], currentPage = 1): void => {
+  const setPagination = useCallback((data: Profile[], currentPage = 1): void => {
     profiles.pagination.currentPage = currentPage
     profiles.pagination.totalPages = data.length
-  }
+  }, [profiles.pagination])
   const handlePageChange = (pageNumber: number): void => {
     profiles.pagination.currentPage = pageNumber
     setCurrentPage(pageNumber)
